@@ -1,0 +1,9 @@
+<h1>CSV Data Plot</h1>
+
+<% if @plot_path.present? %>
+  <%= image_tag @plot_path %>
+<% else %>
+  <p>No plot available</p>
+<% end %>
+
+<%= debug @plot_path %>
