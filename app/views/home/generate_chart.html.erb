@@ -1,9 +1,22 @@
-<h1>CSV Data Plot</h1>
+<h1>Generate Charts</h1>
 
-<% if @plot_path.present? %>
-  <%= image_tag @plot_path %>
-<% else %>
-  <p>No plot available</p>
+<%= form_tag({ action: 'generate_chart', method: 'post' }) do %>
+  <h2>Select Chart Types</h2>
+  <label>
+    <%= check_box_tag 'chart_types[]', 'line_plot', @selected_chart_types.include?('line_plot') %>
+    Line Plot
+  </label>
+  <br>
+  <label>
+    <%= check_box_tag 'chart_types[]', 'bar_plot', @selected_chart_types.include?('bar_plot') %>
+    Bar Plot
+  </label>
+  <br>
+  <label>
+    <%= check_box_tag 'chart_types[]', 'dot_plot', @selected_chart_types.include?('dot_plot') %>
+    Dot Plot
+  </label>
+  <br>
+  <%= submit_tag 'Generate' %>
 <% end %>
 
-<%= debug @plot_path %>
