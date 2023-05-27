@@ -1,8 +1,10 @@
 class HomeController < ApplicationController
-  def index
-    @file_path = params[:file_path]
-    @selected_chart_types = params[:chart_types] || []
+def index
+  @selected_chart_types = [] # Initialize the selected_chart_types variable
+  respond_to do |format|
+    format.html# Render index.html.erb
   end
+end
 
   def upload
     uploaded_file = params[:csv_file]
@@ -10,48 +12,40 @@ class HomeController < ApplicationController
 
     File.open(@file_path, 'wb') do |file|
       file.write(uploaded_file.read)
+    end
 
-      redirect_to root_path, notice: 'File uploaded successfully.'
-  session[:file_path] = @file_path.to_s
-
+    redirect_to root_path, notice: 'File uploaded successfully.'
+    session[:file_path] = @file_path.to_s
   end
 
-    # Define the file paths for Python scripts
-    @selected_chart_types = params[:selected_chart_types] || []
+  def generate_chart
+    puts "Received params: #{params.inspect}"
 
-#    bar_path = Rails.root.join('lib', 'scripts', 'barplot.py')
-#    scatter_path = Rails.root.join('lib', 'scripts', 'scatterplot.py')
-     line_path = Rails.root.join('lib', 'scripts', 'lineplot.py')
+    @file_path = session[:file_path]
+    line_path = Rails.root.join('lib', 'scripts', 'lineplot.py')
+    bar_path = Rails.root.join('lib', 'scripts', 'barplot.py')
+    scatter_path = Rails.root.join('lib', 'scripts', 'scatterplot.py')
+    @selected_chart_types = params[:chart_types] || []
 
-#   system("python #{line_path} #{file_path}")
-
- def generate_chart
-  @file_path = session[:file_path]
-  @bar_path = session[:bar_path]
-  @scatter_path = session[:scatter_path]
-  line_path = Rails.root.join('lib', 'scripts', 'lineplot.py')
-  @line_path = line_path
-  bar_path = Rails.root.join('lib', 'scripts', 'barplot.py')
-  @bar_path = bar_path
-  scatter_path = Rails.root.join('lib', 'scripts', 'scatterplot.py')
-  @scatter_path = scatter_path
-  @selected_chart_types = params[:'chart_types'] || []
-  puts "Received chart types: #{params[:chart_types]}"
-  puts "File_path: '#{@file_path}'"    
     # Generate the desired charts based on the selected chart types
     if @selected_chart_types.include?('bar_plot')
-      system("python #{@bar_path} '#{@file_path}'")   
+      system("python #{bar_path} '#{@file_path}'")
+      @bar_plot = '/uploads/barplot.png'
     end
     if @selected_chart_types.include?('scatter_plot')
-     system("python #{@scatter_path} '#{@file_path}'")
+      system("python #{scatter_path} '#{@file_path}'")
+      @scatter_plot = '/uploads/scatterplot.png'
     end
     if @selected_chart_types.include?('line_plot')
-     system("python #{line_path} '#{@file_path}'")
-#  @line_plot = '/uploads/lineplot.png'
+      system("python #{line_path} '#{@file_path}'")
+      @line_plot = '/uploads/lineplot.png'
+    end
 
-  render 'generate_chart'
+    respond_to do |format|
+      format.js { render layout: false } # Render generate_chart.js.erb
+      format.turbo_stream { render partial: 'plots', locals: { selected_chart_types: @selected_chart_types 
+}}
+    end
+  end
 end
-end
-end
-end
-#end
+
