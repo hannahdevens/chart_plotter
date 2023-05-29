@@ -1,9 +1,9 @@
 class HomeController < ApplicationController
 def index
   @selected_chart_types = [] # Initialize the selected_chart_types variable
-  respond_to do |format|
-    format.html# Render index.html.erb
-  end
+  #respond_to do |format|
+    #format.html# Render index.html.erb
+  #end
 end
 
   def upload
@@ -39,13 +39,17 @@ end
     if @selected_chart_types.include?('line_plot')
       system("python #{line_path} '#{@file_path}'")
       @line_plot = '/uploads/lineplot.png'
-    end
 
-    respond_to do |format|
-      format.js { render layout: false } # Render generate_chart.js.erb
-      format.turbo_stream { render partial: 'plots', locals: { selected_chart_types: @selected_chart_types 
-}}
+  respond_to do |format|
+    format.html do
+      if @selected_chart_types.any?
+        render partial: 'plots', locals: { line_plot: @line_plot, bar_plot: @bar_plot, scatter_plot: 
+@scatter_plot }
+      else
+        render plain: 'No chart types selected.'
+      end
     end
   end
+end   
 end
-
+end
