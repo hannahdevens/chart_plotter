@@ -1,0 +1,7 @@
+.chart-container {
+  display: flex;
+}
+
+.chart {
+  flex: 1;
+}
