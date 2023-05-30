@@ -1,0 +1,50 @@
+<h1>Upload CSV File</h1>
+
+<%= form_tag({ action: 'upload' }, multipart: true) do %>
+  <%= file_field_tag :csv_file, id: 'csv-file' %>
+  <%= submit_tag 'Upload', id: 'upload-button' %>
+<% end %>
+
+<% if flash[:notice] %>
+  <div class="notice">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<%= form_tag({ action: 'generate_chart', method: 'post' }) do %>
+  <h2>Select Chart Types</h2>
+  <label>
+    <%= check_box_tag 'chart_types[]', 'line_plot', @selected_chart_types.include?('line_plot') %>
+    Line Plot
+  </label>
+  <br>
+  <label>
+    <%= check_box_tag 'chart_types[]', 'bar_plot', @selected_chart_types.include?('bar_plot') %>
+    Bar Plot
+  </label>
+  <br>
+  <label>
+    <%= check_box_tag 'chart_types[]', 'scatter_plot', @selected_chart_types.include?('scatter_plot') %>
+    Scatter Plot
+  </label>
+  <br>
+  <%= submit_tag 'Generate' %>
+<% end %>
+
+<% 
+if 
+line_plot %>
+  <h3>Line Plot</h3>
+  <%= image_tag line_plot %>
+<% end %>
+
+<% if bar_plot %>
+  <h3>Bar Plot</h3>
+  <%= image_tag bar_plot %>
+<% end %>
+
+<% if scatter_plot %>
+  <h3>Scatter Plot</h3>
+  <%= image_tag scatter_plot %>
+<% end %>
+
