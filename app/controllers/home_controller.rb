@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
 def index
   @selected_chart_types = [] # Initialize the selected_chart_types variable
+  @charts_data = {}
   #respond_to do |format|
     #format.html# Render index.html.erb
   #end
