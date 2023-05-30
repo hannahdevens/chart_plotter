@@ -31,20 +31,33 @@
   <%= submit_tag 'Generate' %>
 <% end %>
 
-<% 
-if 
-line_plot %>
-  <h3>Line Plot</h3>
-  <%= image_tag line_plot %>
-<% end %>
+<div id="chart-container">
+  <% if line_plot %>
+    <div class="chart">
+      <h3>Line Plot</h3>
+      <%= image_tag line_plot, class: 'chart-image' %>
+    </div>
+  <% end %>
 
-<% if bar_plot %>
-  <h3>Bar Plot</h3>
-  <%= image_tag bar_plot %>
-<% end %>
+  <% if bar_plot %>
+    <div class="chart">
+      <h3>Bar Plot</h3>
+      <%= image_tag bar_plot, class: 'chart-image' %>
+    </div>
+  <% end %>
 
-<% if scatter_plot %>
-  <h3>Scatter Plot</h3>
-  <%= image_tag scatter_plot %>
-<% end %>
+  <% if scatter_plot %>
+    <div class="chart">
+      <h3>Scatter Plot</h3>
+      <%= image_tag scatter_plot, class: 'chart-image' %>
+    </div>
+  <% end %>
+</div>
 
+<style>
+  #chart-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-gap: 20px;
+  }
+</style>

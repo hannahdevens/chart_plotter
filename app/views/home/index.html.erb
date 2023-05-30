@@ -31,9 +31,25 @@
   <%= submit_tag 'Generate' %>
 <% end %>
 
-<script>
-  document.getElementById('upload-button').addEventListener('click', function() {
-    document.querySelector('.notice').style.display = 'block';
-  });
-</script>
+<div id="chart-container">
+  <% if @charts_data[:line_plot] %>
+    <div class="chart">
+      <h3>Line Plot</h3>
+      <%= image_tag @charts_data[:line_plot], class: 'chart-image' %>
+    </div>
+  <% end %>
 
+  <% if @charts_data[:bar_plot] %>
+    <div class="chart">
+      <h3>Bar Plot</h3>
+      <%= image_tag @charts_data[:bar_plot], class: 'chart-image' %>
+    </div>
+  <% end %>
+
+  <% if @charts_data[:scatter_plot] %>
+    <div class="chart">
+      <h3>Scatter Plot</h3>
+      <%= image_tag @charts_data[:scatter_plot], class: 'chart-image' %>
+    </div>
+  <% end %>
+</div>
