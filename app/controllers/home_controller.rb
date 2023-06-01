@@ -19,7 +19,7 @@ end
     session[:file_path] = @file_path.to_s
   end
 
-  def generate_chart
+  def generate_charts
     puts "Received params: #{params.inspect}"
 
     @file_path = session[:file_path]
@@ -27,30 +27,29 @@ end
     bar_path = Rails.root.join('lib', 'scripts', 'barplot.py')
     scatter_path = Rails.root.join('lib', 'scripts', 'scatterplot.py')
     @selected_chart_types = params[:chart_types] || []
-
     # Generate the desired charts based on the selected chart types
+    if @selected_chart_types.include?('line_plot')
+      system("python #{line_path} '#{@file_path}'")
+      @line_plot = '/uploads/lineplot.png'
+    
+    if @selected_chart_types.include?('scatter_plot')
+      system("python #{scatter_path} '#{@file_path}'")
+      @scatter_plot = '/uploads/scatterplot.png'
+    
     if @selected_chart_types.include?('bar_plot')
       system("python #{bar_path} '#{@file_path}'")
       @bar_plot = '/uploads/barplot.png'
     end
-    if @selected_chart_types.include?('scatter_plot')
-      system("python #{scatter_path} '#{@file_path}'")
-      @scatter_plot = '/uploads/scatterplot.png'
     end
-    if @selected_chart_types.include?('line_plot')
-      system("python #{line_path} '#{@file_path}'")
-      @line_plot = '/uploads/lineplot.png'
-
+    end
   respond_to do |format|
     format.html do
       if @selected_chart_types.any?
-        render partial: 'plots', locals: { line_plot: @line_plot, bar_plot: @bar_plot, scatter_plot: 
-@scatter_plot }
+        render partial: 'plots', locals: { bar_plot: @bar_plot, line_plot: @line_plot, scatter_plot: @scatter_plot }
       else
         render plain: 'No chart types selected.'
       end
     end
   end
 end   
-end
 end

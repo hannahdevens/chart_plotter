@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index'
-  post '/upload', to: 'home#upload'
-  post '/generate_chart', to: 'home#generate_chart'
+  post '/generate_charts', to: 'home#generate_charts', as: 'generate_charts'
+  post '/upload', to: 'home#upload', as: 'upload'
 end
+

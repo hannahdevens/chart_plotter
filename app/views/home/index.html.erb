@@ -1,6 +1,8 @@
-<h1>Upload CSV File</h1>
+<h1>Welcome to the Schmid Lab Microbial Growth Model!</h1>
+<p> Upload your CSV file, then select the charts you would like to generate.</p>
 
 <%= form_tag({ action: 'upload' }, multipart: true) do %>
+<h2>Upload CSV File</h2>
   <%= file_field_tag :csv_file, id: 'csv-file' %>
   <%= submit_tag 'Upload', id: 'upload-button' %>
 <% end %>
@@ -11,7 +13,7 @@
   </div>
 <% end %>
 
-<%= form_tag({ action: 'generate_chart', method: 'post' }) do %>
+<%= form_tag({ action: 'generate_charts', method: 'post' }) do %>
   <h2>Select Chart Types</h2>
   <label>
     <%= check_box_tag 'chart_types[]', 'line_plot', @selected_chart_types.include?('line_plot') %>
