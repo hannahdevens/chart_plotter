@@ -39,8 +39,6 @@
       <h3>Line Plot</h3>
       <%= image_tag '/uploads/lineplot.png', class: 'chart-image' %>
     </div> 
-  <% else %>
-    <p>No line plot data available.</p>
   <% end %>
 
   <% if @selected_chart_types.include?('bar_plot') %>
@@ -48,8 +46,6 @@
       <h3>Bar Plot</h3>
       <%= image_tag '/uploads/barplot.png', class: 'chart-image' %>
     </div>
-  <% else %>
-    <p>No bar plot data available.</p>
   <% end %>
 
   <% if @selected_chart_types.include?('scatter_plot') %>
@@ -57,8 +53,13 @@
       <h3>Scatter Plot</h3>
       <%= image_tag '/uploads/scatterplot.png', class: 'chart-image' %>
     </div>
-  <% else %>
-    <p>No scatter plot data available.</p>
   <% end %>
 </div>
 
+<style>
+  #chart-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-gap: 20px;
+  }
+</style>
