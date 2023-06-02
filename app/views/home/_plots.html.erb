@@ -4,11 +4,13 @@
 <h1>Welcome to the Schmid Lab Microbial Growth Model!</h1>
 <p> Upload your CSV file, then select the charts you would like to generate.</p>
 
-<%= form_tag({ action: 'upload' }, multipart: true) do %>
+<div class="upload_class">
+<%= form_tag(upload_path, multipart: true) do %>
 <h2>Upload CSV File</h2>
-  <%= file_field_tag :csv_file, id: 'csv-file' %>
-  <%= submit_tag 'Upload', id: 'upload-button' %>
+  <%= file_field_tag 'csv_files[]', multiple:true %>
+  <%= submit_tag 'Upload' %>
 <% end %>
+</div>
 
 <% if flash[:notice] %>
   <div class="notice">
@@ -18,6 +20,7 @@
 
 <%= form_tag({ action: 'generate_charts', method: 'post' }) do %>
   <h2>Select Chart Types</h2>
+<div class="select_class">
   <label>
     <%= check_box_tag 'chart_types[]', 'line_plot', @selected_chart_types.include?('line_plot') %>
     Line Plot
@@ -34,9 +37,10 @@
   </label>
   <br>
   <%= submit_tag 'Generate' %>
+</div>
 <% end %>
 
-<div id="chart-container">
+<div id="chart-container" class="<%= @selected_chart_types.length == 1 ? 'single-chart' : '' %>">
   <% if @selected_chart_types.include?('line_plot') %>
     <div class="chart">
       <h3>Line Plot</h3>
@@ -64,5 +68,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     grid-gap: 20px;
+  }
+  .chart {
+    text-align: center;
   }
 </style>

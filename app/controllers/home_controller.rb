@@ -7,17 +7,22 @@ def index
   #end
 end
 
-  def upload
-    uploaded_file = params[:csv_file]
-    @file_path = Rails.root.join('public', 'uploads', uploaded_file.original_filename)
+def upload
+  params[:csv_files].each do |file|
+    uploaded_file = file
+    file_path = Rails.root.join('public', 'uploads', uploaded_file.original_filename)
 
-    File.open(@file_path, 'wb') do |file|
-      file.write(uploaded_file.read)
+    File.open(file_path, 'wb') do |f|
+      f.write(uploaded_file.read)
     end
 
-    redirect_to root_path, notice: 'File uploaded successfully.'
-    session[:file_path] = @file_path.to_s
+    puts "File upload done"
+    session[:file_paths] ||= [] # Initialize session[:file_paths] as an  empty array if it doesn't exist
+    session[:file_paths] << file_path.to_s # Add the file path to the session array
   end
+
+  redirect_to root_path, notice: 'Files uploaded successfully.'
+end
 
   def generate_charts
     puts "Received params: #{params.inspect}"

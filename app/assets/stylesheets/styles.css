@@ -2,6 +2,11 @@
   display: flex;
 }
 
+.single-chart {
+  display: flex;
+  justify-content: center;
+}
+
 .chart {
   flex: 1;
 }
