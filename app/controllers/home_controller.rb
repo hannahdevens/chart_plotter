@@ -8,17 +8,47 @@ def index
 end
 
 def upload
-  params[:csv_files].each do |file|
+  data_files = Array(params[:data_files])
+  data_files.each do |file|
     uploaded_file = file
-    file_path = Rails.root.join('public', 'uploads', uploaded_file.original_filename)
+    if File.extname(uploaded_file.original_filename) == '.asc'
+      file_path = Rails.root.join('public', 'uploads', 
+'userexpt','data', uploaded_file.original_filename)
 
-    File.open(file_path, 'wb') do |f|
-      f.write(uploaded_file.read)
+      File.open(file_path, 'wb') do |f|
+        f.write(uploaded_file.read)
+      end
+
+      puts "Data ASC file upload done"
+      session[:data_file_paths] ||= [] # Initialize session[:data_file_paths] as an empty array if it doesn't exist
+      session[:data_file_paths] << file_path.to_s # Add the file path to the session array
+    else
+      # Handle invalid data file format (not .asc)
+      puts "Invalid data file format"
+      # You can add error handling logic or redirect the user to an error page
     end
+  end
 
-    puts "File upload done"
-    session[:file_paths] ||= [] # Initialize session[:file_paths] as an  empty array if it doesn't exist
-    session[:file_paths] << file_path.to_s # Add the file path to the session array
+  mapping_files = Array(params[:mapping_files])
+  mapping_files.each do |file|
+    uploaded_file = file
+    file_extension = File.extname(uploaded_file.original_filename)
+    if file_extension == '.csv' || file_extension == '.txt'
+      file_path = Rails.root.join('public', 'uploads','userexpt', 'mapping', 
+uploaded_file.original_filename)
+
+      File.open(file_path, 'wb') do |f|
+        f.write(uploaded_file.read)
+      end
+
+      puts "Mapping #{file_extension} file upload done"
+      session[:mapping_file_paths] ||= [] # Initialize session[:mapping_file_paths] as an empty array if it doesn't exist
+      session[:mapping_file_paths] << file_path.to_s # Add the file path to the session array
+    else
+      # Handle invalid mapping file format (not .csv or .txt)
+      puts "Invalid mapping file format"
+      # You can add error handling logic or redirect the user to an error page
+    end
   end
 
   redirect_to root_path, notice: 'Files uploaded successfully.'
@@ -34,7 +64,9 @@ end
     @selected_chart_types = params[:chart_types] || []
     # Generate the desired charts based on the selected chart types
     if @selected_chart_types.include?('line_plot')
-      system("python #{line_path} '#{@file_path}'")
+      `conda activate /lib/envs/amigacondaenv/ && python3 
+/lib/scripts/amigagit/amiga.py summarize -i 
+/public/uploads/userexpt/`
       @line_plot = '/uploads/lineplot.png'
     
     if @selected_chart_types.include?('scatter_plot')

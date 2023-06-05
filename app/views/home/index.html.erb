@@ -3,9 +3,15 @@
 
 <div class="upload_class">
 <%= form_tag(upload_path, multipart: true) do %>
-<h2>Upload CSV File</h2>
-  <%= file_field_tag 'csv_files[]', multiple: true %>
+<h2>Upload Data and Metdata File(s)</h2>
+  <label for="data_files">Data File:</label>
+  <%= file_field_tag 'data_files[]', multiple: true %>
+
+  <label for="mapping_files">Mapping File:</label>
+  <%= file_field_tag 'mapping_files[]', multiple: true %>
+
   <%= submit_tag 'Upload' %>
+
 <% end %>
 </div>
 
