@@ -65,7 +65,7 @@ end
     # Generate the desired charts based on the selected chart types
     if @selected_chart_types.include?('line_plot')
       `conda activate /lib/envs/amigacondaenv/ && python3 
-/lib/scripts/amigagit/amiga.py summarize -i 
+/lib/scripts/amigagitsimplified/amiga.py summarize -i 
 /public/uploads/userexpt/`
       @line_plot = '/uploads/lineplot.png'
     
