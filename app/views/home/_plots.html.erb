@@ -2,13 +2,25 @@
 <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <h1>Welcome to the Schmid Lab Microbial Growth Model!</h1>
-<p> Upload your CSV file, then select the charts you would like to generate.</p>
+<p> The model takes plate reader data as input data file(s), in either tab-delimited 
+or 
+comma-separated formats. You may also provide a metadata file(s) 
+containing the metadata associated with each well. Upload your .txt, .csv, or .ascii 
+file, along with an 
+associated metadata file if desired, and then select the charts you would like to 
+generate.</p>
 
 <div class="upload_class">
 <%= form_tag(upload_path, multipart: true) do %>
-<h2>Upload CSV File</h2>
-  <%= file_field_tag 'csv_files[]', multiple:true %>
+<h2>Upload Data and Metadata File(s)</h2>
+  <label for="data_files">Data File:</label>
+  <%= file_field_tag 'data_files[]', multiple: true %>
+
+  <label for="mapping_files">Mapping File:</label>
+  <%= file_field_tag 'mapping_files[]', multiple: true %>
+
   <%= submit_tag 'Upload' %>
+
 <% end %>
 </div>
 
@@ -18,7 +30,7 @@
   </div>
 <% end %>
 
-<%= form_tag({ action: 'generate_charts', method: 'post' }) do %>
+<%= form_tag(generate_charts_path, method: 'post' ) do %>
   <h2>Select Chart Types</h2>
 <div class="select_class">
   <label>
@@ -41,19 +53,15 @@
 <% end %>
 
 <div id="chart-container" class="<%= @selected_chart_types.length == 1 ? 'single-chart' : '' %>">
-<% if @line_plot_pdf_paths.present? %>
+<% if @line_plot_png_paths.present? %>
   <div class="chart">
-    <h3>Line Plot PDFs</h3>
-    <% @line_plot_pdf_paths.each do |pdf_path| %>
-      <object data="<%= pdf_path %>" type="application/pdf" width="100%" 
-height="600px">
-        <embed src="<%= pdf_path %>" type="application/pdf" />
-      </object>
+    <h3 style="color: #fff;">Raw Data Plots (Per Well)</h3>
+    <% @line_plot_png_paths.each do |png_path| %>
+  <%= image_tag serve_image_path(filename: File.basename(png_path)), class: 'chart-image' %>
       <br>
     <% end %>
   </div>
 <% end %>
-
 
   <% if @selected_chart_types.include?('bar_plot') %>
     <div class="chart">
@@ -80,3 +88,4 @@ height="600px">
     text-align: center;
   }
 </style>
+

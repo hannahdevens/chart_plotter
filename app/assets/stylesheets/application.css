@@ -95,7 +95,7 @@ p {
   transform: translate(-50%, -50%);
   font-size: 24px;
   color: #fff;
-  background: rgba(0, 0, 0, 0.8);
+  background: none;
   padding: 0.2rem 0.5rem;
   border-radius: 0.2rem;
 }
@@ -104,29 +104,6 @@ p {
   display: flex;
   justify-content: center;
 }
-
-<div id="chart-container" class="<%= @charts_data.keys.length == 1 ? 'single-chart' : '' %>">
-<% if @charts_data[:line_plot] %>
-    <div class="chart-container">
-      <h3>Line Plot</h3>
-      <%= image_tag @charts_data[:line_plot], class: 'chart-image' %>
-    </div>
-  <% end %>
-
-  <% if @charts_data[:bar_plot] %>
-    <div class="chart-container">
-      <h3>Bar Plot</h3>
-      <%= image_tag @charts_data[:bar_plot], class: 'chart-image' %>
-    </div>
-  <% end %>
-
-  <% if @charts_data[:scatter_plot] %>
-    <div class="chart-container">
-      <h3>Scatter Plot</h3>
-      <%= image_tag @charts_data[:scatter_plot], class: 'chart-image' %>
-    </div>
-  <% end %>
-</div>
 
 /* Makes the welcome page responsive to page width changes*/
 .skinny {

@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.2"
 
+gem 'mini_magick' #to convert PDFs to PNGs
 gem 'activerecord-session_store' #to avoid cookie overflow
 gem 'csv'  # for CSV file processing
 

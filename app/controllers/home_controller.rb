@@ -1,6 +1,5 @@
 class HomeController < ApplicationController
 skip_before_action :verify_authenticity_token
-
   def index
     @selected_chart_types = [] # Initialize the selected_chart_types variable
     @charts_data = {}
@@ -64,6 +63,20 @@ skip_before_action :verify_authenticity_token
     if @selected_chart_types.include?('line_plot')
       system("python3 lib/scripts/amigagitsimplified/amiga.py summarize -i public/uploads/userexpt/")
     @line_plot_pdf_paths = Dir.glob(Rails.root.join('public', 'uploads', 'userexpt', 'figures', '*.pdf'))
+
+      # Convert PDFs to PNGs
+      @line_plot_png_paths = []
+      @line_plot_pdf_paths.each do |pdf_path|
+        png_path = pdf_path.sub('.pdf', '.png')
+        require "mini_magick"
+        MiniMagick::Tool::Convert.new do |convert|
+          convert << pdf_path
+          convert << png_path
+        end
+        @line_plot_png_paths << png_path
+        puts @line_plot_png_paths.inspect
+  puts view_context.image_path(png_path)
+       end
     end
 
     if @selected_chart_types.include?('scatter_plot')
@@ -79,13 +92,22 @@ skip_before_action :verify_authenticity_token
     respond_to do |format|
       format.html do
         if @selected_chart_types.any?
-          render partial: 'plots', locals: { bar_plot: @bar_plot, 
-line_plot_pdf_paths: @line_plot_pdf_paths, scatter_plot: @scatter_plot }
+          render partial: 'plots', locals: { bar_plot: @bar_plot, line_plot_pdf_paths: @line_plot_pdf_paths, scatter_plot: @scatter_plot }
         else
           render plain: 'No chart types selected.'
         end
       end
     end
   end
+  def serve_image
+    filename = params[:filename]
+    file_path = Rails.root.join('public', 'uploads', 'userexpt', 'figures', 
+filename)
+    
+    if File.exist?(file_path) && File.file?(file_path)
+      send_file file_path, disposition: 'inline'
+    else
+      head :not_found
+    end
+  end
 end
-
