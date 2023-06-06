@@ -31,8 +31,8 @@ generate.</p>
   <h2>Select Chart Types</h2>
 <div class="select_class">
   <label>
-    <%= check_box_tag 'chart_types[]', 'line_plot', @selected_chart_types.include?('line_plot') %>
-    Line Plot
+    <%= check_box_tag 'chart_types[]', 'raw_data', @selected_chart_types.include?('raw_data') %>
+    Raw Data Plot (Per Well)
   </label>
   <br>
   <label>
@@ -45,6 +45,9 @@ generate.</p>
     Scatter Plot
   </label>
   <br>
-  <%= submit_tag 'Generate' %>
+  <%= submit_tag 'Generate', id: 'generate-button' %>
 </div>
 <% end %>
+
+
+

@@ -51,31 +51,26 @@ skip_before_action :verify_authenticity_token
   end
 
   def generate_charts
-    puts "Received params: #{params.inspect}"
-
     @file_path = session[:file_path]
-    line_path = Rails.root.join('lib', 'scripts', 'lineplot.py')
     bar_path = Rails.root.join('lib', 'scripts', 'barplot.py')
     scatter_path = Rails.root.join('lib', 'scripts', 'scatterplot.py')
     @selected_chart_types = params[:chart_types] || []
 
     # Generate the desired charts based on the selected chart types
-    if @selected_chart_types.include?('line_plot')
+    if @selected_chart_types.include?('raw_data')
       system("python3 lib/scripts/amigagitsimplified/amiga.py summarize -i public/uploads/userexpt/")
-    @line_plot_pdf_paths = Dir.glob(Rails.root.join('public', 'uploads', 'userexpt', 'figures', '*.pdf'))
+    @raw_data_pdf_paths = Dir.glob(Rails.root.join('public', 'uploads', 'userexpt', 'figures', '*.pdf'))
 
       # Convert PDFs to PNGs
-      @line_plot_png_paths = []
-      @line_plot_pdf_paths.each do |pdf_path|
+      @raw_data_png_paths = []
+      @raw_data_pdf_paths.each do |pdf_path|
         png_path = pdf_path.sub('.pdf', '.png')
         require "mini_magick"
         MiniMagick::Tool::Convert.new do |convert|
           convert << pdf_path
           convert << png_path
         end
-        @line_plot_png_paths << png_path
-        puts @line_plot_png_paths.inspect
-  puts view_context.image_path(png_path)
+        @raw_data_png_paths << png_path
        end
     end
 
@@ -92,7 +87,8 @@ skip_before_action :verify_authenticity_token
     respond_to do |format|
       format.html do
         if @selected_chart_types.any?
-          render partial: 'plots', locals: { bar_plot: @bar_plot, line_plot_pdf_paths: @line_plot_pdf_paths, scatter_plot: @scatter_plot }
+          render partial: 'plots', locals: { bar_plot: @bar_plot, raw_data_pdf_paths: @raw_data_pdf_paths, 
+scatter_plot: @scatter_plot }
         else
           render plain: 'No chart types selected.'
         end

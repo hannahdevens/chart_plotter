@@ -34,8 +34,8 @@ generate.</p>
   <h2>Select Chart Types</h2>
 <div class="select_class">
   <label>
-    <%= check_box_tag 'chart_types[]', 'line_plot', @selected_chart_types.include?('line_plot') %>
-    Line Plot
+    <%= check_box_tag 'chart_types[]', 'raw_data', @selected_chart_types.include?('raw_data') %>
+    Raw Data Plot (Per Well)
   </label>
   <br>
   <label>
@@ -53,10 +53,10 @@ generate.</p>
 <% end %>
 
 <div id="chart-container" class="<%= @selected_chart_types.length == 1 ? 'single-chart' : '' %>">
-<% if @line_plot_png_paths.present? %>
+<% if @raw_data_png_paths.present? %>
   <div class="chart">
     <h3 style="color: #fff;">Raw Data Plots (Per Well)</h3>
-    <% @line_plot_png_paths.each do |png_path| %>
+    <% @raw_data_png_paths.each do |png_path| %>
   <%= image_tag serve_image_path(filename: File.basename(png_path)), class: 'chart-image' %>
       <br>
     <% end %>
