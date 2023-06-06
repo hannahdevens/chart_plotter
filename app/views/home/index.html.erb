@@ -1,9 +1,15 @@
 <h1>Welcome to the Schmid Lab Microbial Growth Model!</h1>
-<p> Upload your CSV file, then select the charts you would like to generate.</p>
+<p> The model takes plate reader data as input data file(s), in either tab-delimited 
+or 
+comma-separated formats. You may also provide a metadata file(s) 
+containing the metadata associated with each well. Upload your .txt, .csv, or .ascii 
+file, along with an 
+associated metadata file if desired, and then select the charts you would like to 
+generate.</p>
 
 <div class="upload_class">
 <%= form_tag(upload_path, multipart: true) do %>
-<h2>Upload Data and Metdata File(s)</h2>
+<h2>Upload Data and Metadata File(s)</h2>
   <label for="data_files">Data File:</label>
   <%= file_field_tag 'data_files[]', multiple: true %>
 

@@ -41,12 +41,19 @@
 <% end %>
 
 <div id="chart-container" class="<%= @selected_chart_types.length == 1 ? 'single-chart' : '' %>">
-  <% if @selected_chart_types.include?('line_plot') %>
-    <div class="chart">
-      <h3>Line Plot</h3>
-      <%= image_tag '/uploads/lineplot.png', class: 'chart-image' %>
-    </div> 
-  <% end %>
+<% if @line_plot_pdf_paths.present? %>
+  <div class="chart">
+    <h3>Line Plot PDFs</h3>
+    <% @line_plot_pdf_paths.each do |pdf_path| %>
+      <object data="<%= pdf_path %>" type="application/pdf" width="100%" 
+height="600px">
+        <embed src="<%= pdf_path %>" type="application/pdf" />
+      </object>
+      <br>
+    <% end %>
+  </div>
+<% end %>
+
 
   <% if @selected_chart_types.include?('bar_plot') %>
     <div class="chart">

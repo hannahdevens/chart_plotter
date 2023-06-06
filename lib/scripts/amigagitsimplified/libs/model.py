@@ -21,7 +21,6 @@ __email__ = "midani@bcm.edu"
 #   run
 
 import importlib
-import cython
 import paramz
 modulename = importlib.machinery.SourceFileLoader('GPy','/Users/hrd11/Desktop/Schmid_Lab/amigacondaenv/lib/python3.8/site-packages/GPy/__init__.py').load_module()
 import GPy
