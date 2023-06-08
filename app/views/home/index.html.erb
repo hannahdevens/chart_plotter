@@ -36,8 +36,8 @@ generate.</p>
   </label>
   <br>
   <label>
-    <%= check_box_tag 'chart_types[]', 'bar_plot', @selected_chart_types.include?('bar_plot') %>
-    Bar Plot
+    <%= check_box_tag 'chart_types[]', 'fit_stats', @selected_chart_types.include?('fit_stats') %>
+    Fit Statistics
   </label>
   <br>
   <label>
@@ -48,6 +48,4 @@ generate.</p>
   <%= submit_tag 'Generate', id: 'generate-button' %>
 </div>
 <% end %>
-
-
 

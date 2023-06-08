@@ -39,8 +39,8 @@ generate.</p>
   </label>
   <br>
   <label>
-    <%= check_box_tag 'chart_types[]', 'bar_plot', @selected_chart_types.include?('bar_plot') %>
-    Bar Plot
+    <%= check_box_tag 'chart_types[]', 'fit_stats', @selected_chart_types.include?('fit_stats') %>
+    Fit Statistics	
   </label>
   <br>
   <label>
@@ -63,12 +63,22 @@ generate.</p>
   </div>
 <% end %>
 
-  <% if @selected_chart_types.include?('bar_plot') %>
-    <div class="chart">
-      <h3>Bar Plot</h3>
-      <%= image_tag '/uploads/barplot.png', class: 'chart-image' %>
-    </div>
-  <% end %>
+<% if @selected_chart_types.include?('fit_stats') %>
+  <div class="fit-stats-chart">
+    <h3 class="fit-stats-title">Fit Statistics</h3>
+    <% @fit_stats_paths.each do |fit_stats_path| %>
+      <table class="fit-stats-table">
+        <% File.foreach(fit_stats_path) do |line| %>
+          <tr>
+            <% line.split("\t").each do |cell| %>
+              <td><%= cell %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+<% end %>
 
   <% if @selected_chart_types.include?('scatter_plot') %>
     <div class="chart">
@@ -88,4 +98,10 @@ generate.</p>
     text-align: center;
   }
 </style>
+
+<% if @selected_chart_types.include?('fit_stats') %>
+  <% @fit_stats_paths.each do |fit_stats_path| %>
+    <%= fit_stats_path %>
+  <% end %>
+<% end %>
 

@@ -108,6 +108,31 @@ p {
   justify-content: center;
 }
 
+.chart-container .fit-stats-chart .fit-stats-title {
+  /* styles for the fit stats title */
+  text-align: center;
+  color: #fff;
+}
+
+.chart-container .fit-stats-chart .fit-stats-table-container {
+  /* styles for the table container */
+  overflow-x: auto;
+}
+
+.chart-container .fit-stats-chart .fit-stats-table {
+  /* styles for the table */
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.chart-container .fit-stats-chart .fit-stats-table td {
+  /* styles for the table cells */
+  padding: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+}
+
 /* Makes the welcome page responsive to page width changes*/
 .skinny {
   width: 60%;
@@ -121,3 +146,4 @@ p {
   flex-direction: column;
   justify-content: flex-start;
 }
+

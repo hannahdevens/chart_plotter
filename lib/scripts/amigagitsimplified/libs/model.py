@@ -22,7 +22,7 @@ __email__ = "midani@bcm.edu"
 
 import importlib
 import paramz
-modulename = importlib.machinery.SourceFileLoader('GPy','/Users/hrd11/Desktop/Schmid_Lab/amigacondaenv/lib/python3.8/site-packages/GPy/__init__.py').load_module()
+modulename = importlib.machinery.SourceFileLoader('GPy','./lib/envs/amigacondaenv/lib/python3.8/site-packages/GPy/__init__.py').load_module()
 import GPy
 import warnings
 import numpy as np

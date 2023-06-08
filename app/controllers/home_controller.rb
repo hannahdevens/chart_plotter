@@ -52,13 +52,12 @@ skip_before_action :verify_authenticity_token
 
   def generate_charts
     @file_path = session[:file_path]
-    bar_path = Rails.root.join('lib', 'scripts', 'barplot.py')
     scatter_path = Rails.root.join('lib', 'scripts', 'scatterplot.py')
     @selected_chart_types = params[:chart_types] || []
 
     # Generate the desired charts based on the selected chart types
     if @selected_chart_types.include?('raw_data')
-      system("python3 lib/scripts/amigagitsimplified/amiga.py summarize -i public/uploads/userexpt/")
+    system("source activate lib/envs/amigacondaenv/ && lib/envs/amigacondaenv/bin/python lib/scripts/amigagitsimplified/amiga.py summarize -i public/uploads/userexpt/")
     @raw_data_pdf_paths = Dir.glob(Rails.root.join('public', 'uploads', 'userexpt', 'figures', '*.pdf'))
 
       # Convert PDFs to PNGs
@@ -79,15 +78,16 @@ skip_before_action :verify_authenticity_token
       @scatter_plot = '/uploads/scatterplot.png'
     end
 
-    if @selected_chart_types.include?('bar_plot')
-      system("python #{bar_path} '#{@file_path}'")
-      @bar_plot = '/uploads/barplot.png'
+    if @selected_chart_types.include?('fit_stats')
+    #system("source activate lib/envs/amigacondaenv/ && lib/envs/amigacondaenv/bin/python lib/scripts/amigagitsimplified/amiga.py fit -i public/uploads/userexpt")
+    @fit_stats_paths = Dir.glob(Rails.root.join('public', 'uploads', 'userexpt', 'summary', '*_summary.txt'))
     end
 
     respond_to do |format|
       format.html do
         if @selected_chart_types.any?
-          render partial: 'plots', locals: { bar_plot: @bar_plot, raw_data_pdf_paths: @raw_data_pdf_paths, 
+          render partial: 'plots', locals: { fit_stats_paths: @fit_stats_paths, raw_data_pdf_paths: 
+@raw_data_pdf_paths, 
 scatter_plot: @scatter_plot }
         else
           render plain: 'No chart types selected.'

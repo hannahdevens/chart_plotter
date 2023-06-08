@@ -26,7 +26,6 @@ import argparse
 import sys
 
 import os
-os.system("conda activate ../../envs/amigacondaenv/")
 
 from libs.commands import Command
 from libs.comm import tidyMessage, tidyDictPrint
